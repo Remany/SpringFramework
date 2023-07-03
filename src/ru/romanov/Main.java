@@ -13,6 +13,8 @@ public class Main {
         BeanFactory beanFactory = new BeanFactory();
         beanFactory.instantiate("ru.romanov");
         beanFactory.populateProperties();
-        System.out.println(beanFactory.getBean("productService"));
+        beanFactory.injectBeanNames();
+        beanFactory.injectBeanFactory();
+        beanFactory.initializeBean();
     }
 }
