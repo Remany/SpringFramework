@@ -11,6 +11,7 @@ public class Main {
             ClassNotFoundException, InstantiationException, IllegalAccessException,
             InvocationTargetException, NoSuchMethodException {
         BeanFactory beanFactory = new BeanFactory();
+        beanFactory.addPostProcessor(new CustomPostProcessor());
         beanFactory.instantiate("ru.romanov");
         beanFactory.populateProperties();
         beanFactory.injectBeanNames();

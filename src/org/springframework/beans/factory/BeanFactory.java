@@ -1,6 +1,7 @@
 package org.springframework.beans.factory;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.config.BeanPostProcessor;
 import org.springframework.beans.factory.stereotype.Component;
 import org.springframework.beans.factory.stereotype.Service;
 
@@ -11,12 +12,14 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.net.URISyntaxException;
 import java.net.URL;
-import java.util.Enumeration;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 public class BeanFactory {
     private Map<String, Object> singletons = new HashMap<>();
+    private List<BeanPostProcessor> postProcessors = new ArrayList<>();
+    public void addPostProcessor(BeanPostProcessor postProcessor) {
+        postProcessors.add(postProcessor);
+    }
     public Object getBean(String beanName){
         return singletons.get(beanName);
     }
@@ -88,9 +91,16 @@ public class BeanFactory {
     }
 
     public void initializeBean() {
-        for (Object bean: singletons.values()) {
+        for (String name: singletons.keySet()) {
+            Object bean = singletons.get(name);
+            for (BeanPostProcessor postProcessor: postProcessors) {
+                postProcessor.postProcessBeforeInitialization(bean, name);
+            }
             if (bean instanceof InitializingBean) {
                 ((InitializingBean) bean).afterPropertiesSet();
+            }
+            for (BeanPostProcessor postProcessor: postProcessors) {
+                postProcessor.postProcessAfterInitialization(bean, name);
             }
         }
     }
