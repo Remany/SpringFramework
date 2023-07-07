@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.stereotype.Component;
 
 import javax.annotations.PostConstruct;
+import javax.annotations.PreDestroy;
 
 @Component
 public class ProductService {
@@ -21,6 +22,11 @@ public class ProductService {
     @PostConstruct
     public void init() {
         System.out.println("Hello from init method");
+    }
+
+    @PreDestroy
+    public void destroy() {
+        System.out.println("Hello from destroy method");
     }
 
     @Override

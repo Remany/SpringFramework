@@ -5,6 +5,7 @@ import org.springframework.beans.factory.config.BeanPostProcessor;
 import org.springframework.beans.factory.stereotype.Component;
 import org.springframework.beans.factory.stereotype.Service;
 
+import javax.annotations.PreDestroy;
 import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Field;
@@ -101,6 +102,23 @@ public class BeanFactory {
             }
             for (BeanPostProcessor postProcessor: postProcessors) {
                 postProcessor.postProcessAfterInitialization(bean, name);
+            }
+        }
+    }
+
+    public void close() {
+        for (Object bean: singletons.values()) {
+            for (Method method: bean.getClass().getDeclaredMethods()) {
+                if (method.isAnnotationPresent(PreDestroy.class)) {
+                    try {
+                        method.invoke(bean);
+                    } catch (IllegalAccessException | InvocationTargetException e) {
+                        throw new RuntimeException(e);
+                    }
+                }
+            }
+            if (bean instanceof DisposableBean) {
+                ((DisposableBean) bean).destroy();
             }
         }
     }

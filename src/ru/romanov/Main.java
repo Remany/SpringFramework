@@ -17,5 +17,6 @@ public class Main {
         beanFactory.injectBeanNames();
         beanFactory.injectBeanFactory();
         beanFactory.initializeBean();
+        beanFactory.close();
     }
 }
