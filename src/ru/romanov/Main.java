@@ -1,6 +1,5 @@
 package ru.romanov;
 
-import org.springframework.beans.factory.BeanFactory;
 import org.springframework.context.ApplicationContext;
 
 import java.io.IOException;

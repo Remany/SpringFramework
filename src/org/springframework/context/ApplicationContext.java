@@ -3,7 +3,6 @@ package org.springframework.context;
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.context.event.ContextClosedEvent;
 
-import javax.management.MBeanServerDelegateMBean;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
