@@ -25,6 +25,10 @@ public class BeanFactory {
         return singletons.get(beanName);
     }
 
+    public Map<String, Object> getSingletons() {
+        return singletons;
+    }
+
     private void newBean(String className, Class classObject) throws InstantiationException, IllegalAccessException {
         Object instance = classObject.newInstance();
         String beanName = className.substring(0, 1).toLowerCase() + className.substring(1);
